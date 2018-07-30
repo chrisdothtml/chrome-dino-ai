@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+:root {
+  --bgColor: #f7f7f7;
+  --fgColor: #24292e;
+}
+
+* {
+  box-sizing: inherit;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  align-items: center;
+  background-color: var(--bgColor);
+  display: flex;
+  color: var(--fgColor);
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  justify-content: center;
+}
+
+@keyframes octocat-wave {
+  0%, 100% { transform: rotate(0) }
+  20%, 60% { transform: rotate(-25deg) }
+  40%, 80% { transform: rotate(10deg) }
+}
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+.btn-container {
+  display: flex;
+  margin-top: 30px;
+}
+
+.btn {
+  background-color: transparent;
+  border: 2px solid var(--fgColor);
+  cursor: pointer;
+  font-size: 10px;
+  margin: 0 5px;
+  opacity: 1;
+  padding: 5px 10px;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.btn:focus,
+.btn:hover {
+  background-color: rgba(0, 0, 0, .05);
+  opacity: 0.8;
+}
