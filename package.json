@@ -1,14 +1,21 @@
 {
   "private": true,
+  "engines": {
+    "node": "^11.9.0"
+  },
   "scripts": {
     "lint": "standard --verbose | snazzy",
-    "start": "serve"
-  },
-  "dependencies": {
-    "serve": "^9.3.0"
+    "start": "serve",
+    "train": "node -r ./lib/_train-setup.js -r esm lib/index-train.js",
+    "train-vis": "browser-sync start -s --no-notify --no-open --index vis.html -w generations.json"
   },
   "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "esm": "^3.2.0",
+    "seedrandom": "^2.4.4",
+    "serve": "^9.3.0",
     "snazzy": "^7.1.1",
-    "standard": "^11.0.1"
+    "standard": "^11.0.1",
+    "synaptic": "1.1.4"
   }
 }

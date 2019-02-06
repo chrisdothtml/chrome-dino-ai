@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/png" href="./assets/favicon.png">
+    <title>Chrome Dino</title>
+
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0
+      }
+
+      #legend ul {
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        padding: 20px 0;
+      }
+
+      #legend ul li {
+        margin: 0 10px;
+      }
+
+      #legend ul li span {
+        display: inline-block;
+        height: 1em;
+        margin-right: 10px;
+        vertical-align: middle;
+        width: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="legend"></div>
+    <canvas id="myChart" width="1680" height="400"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hoverintent@2.2.0/dist/hoverintent.min.js"></script>
+    <script>
+      const colors = [
+        'rgba(46, 204, 113, OPACITY)',
+        'rgba(52, 152, 219, OPACITY)',
+        'rgba(155, 89, 182, OPACITY)',
+        'rgba(52, 73, 94, OPACITY)',
+        'rgba(241, 196, 15, OPACITY)',
+        'rgba(211, 84, 0, OPACITY)',
+        'rgba(231, 76, 60, OPACITY)',
+      ]
+      const getColor = (i, opacity) => colors[i].replace('OPACITY', opacity)
+
+      Chart.defaults.global.maintainAspectRatio = false
+      Chart.defaults.global.responsive = false
+
+      fetch('/generations.json', {})
+        .then(res => res.json())
+        .then(generations => {
+          const genKeys = Object.keys(generations)
+
+          if (!genKeys.length) return
+
+          let longestGenLength = -Infinity
+          let longestGen
+          genKeys.forEach((key, i) => {
+            const length = generations[key].length
+
+            if (length > longestGenLength) {
+              longestGenLength = length
+              longestGen = generations[key]
+            }
+          })
+
+          const chart = new Chart('myChart', {
+            type: 'line',
+            data: {
+              labels: longestGen.map((_, i) => i + 1),
+              datasets: genKeys.map((key, i) => ({
+                label: key,
+                backgroundColor: getColor(i, '.2'),
+                borderColor: getColor(i, '1'),
+                // fill: false,
+                data: generations[key],
+              }))
+            },
+            options: {
+              legend: {
+                display: false
+              },
+              elements: {
+                line: {
+                  tension: 0, // disables bezier curves
+                }
+              },
+              scales: {
+                xAxes: [{
+                  display: false,
+                }],
+              }
+            },
+          })
+
+          document.getElementById('legend').innerHTML = chart.generateLegend()
+          // const legend = document.getElementById('legend')
+
+          // legend.innerHTML = chart.generateLegend()
+          // legend.querySelectorAll('ul li').forEach((child, index) => {
+          //   hoverintent(child,
+          //     (event) => {
+          //       chart.data.datasets[index].backgroundColor = getColor(index, '.8')
+          //       chart.data.datasets = [ chart.data.datasets[index] ]
+          //         .concat(chart.data.datasets.filter((_, i) => {
+          //           if (i !== index) {
+          //             //
+          //           }
+
+          //           return i !== index
+          //         }))
+
+          //       chart.update()
+          //     },
+          //     (event) => {
+          //       const index = parseInt(event.target.getAttribute('data-i'))
+
+          //       chart.data.datasets[0].backgroundColor = getColor(index, '.2')
+          //       chart.update()
+          //     },
+          //   )
+          // })
+        })
+    </script>
+  </body>
+</html>
